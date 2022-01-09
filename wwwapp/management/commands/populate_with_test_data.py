@@ -65,6 +65,7 @@ class Command(BaseCommand):
                 self.question_pesel.answers.create(user=user, value_string=profile_data['ssn'])
                 self.question_address.answers.create(user=user, value_string=profile_data['address'])
                 self.question_comments.answers.create(user=user, value_string=self.fake.text(100))
+                self.question_birthday.answers.create(user=user, value_date=profile_data['birthdate'])
             except django.db.utils.IntegrityError:
                 ok = False
 
@@ -170,6 +171,7 @@ class Command(BaseCommand):
         for size in ['XS', 'S', 'M', 'L', 'XL', 'XXL']:
             self.tshirt_sizes[size] = self.question_tshirt_size.options.create(title=size)
         self.question_comments = self.form_userinfo.questions.create(title='Dodatkowe uwagi (np. wegetarianin, uczulony na X, ale też inne)', data_type=FormQuestion.TYPE_TEXTBOX, is_required=False, order=6)
+        self.question_birthday = self.form_userinfo.questions.create(title='Data urodzenia', data_type=FormQuestion.TYPE_DATE, is_required=True, order=7)
         self.form_userinfo.arrival_date = self.question_start_date
         self.form_userinfo.departure_date = self.question_end_date
         self.form_userinfo.save()
